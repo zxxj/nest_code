@@ -5,7 +5,8 @@
 
 # Logs
 logs
-tnpm-debug.log*
+*.log
+npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -40,6 +41,10 @@ lerna-debug.log*
 .env.test.local
 .env.production.local
 .env.local
+
+# temp directory
+.temp
+.tmp
 
 # Runtime data
 pids
