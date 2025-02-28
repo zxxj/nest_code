@@ -1,99 +1,99 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 学习 nest-cli 项目启动脚手架
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 创建nest项目的两种方式
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+```js
+// 1. 通过npx执行,npm会把它下载下来然后执行
+npx @nestjs/cli new [projectname]
 
-## Description
+// 2.全局安装nest-cli创建
+npm i -g @nest/cli
+nest new [projectname]
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ pnpm install
+// 升级nest-cli: npm update -g @nestjs/cli
 ```
 
-## Compile and run the project
+## nest提供的命令
 
-```bash
-# development
-$ pnpm run start
+```js
+// 终端输入: nest -h 可以查看提供的所有命令
 
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+nest new: 创建新项目
+nest generate: 生成代码
+nest build: 编译构建
+nest start: 启动项目
 ```
 
-## Run tests
+### nest new（创建项目）
 
-```bash
-# unit tests
-$ pnpm run test
+```js
+// 终端输入nest new -h 可以查看nest new命令下的细分选项
 
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+nest new [projectname] --skip-git // 代表创建项目时不初始化git仓库
+nest new [projectname] --skip-install // 代表创建项目时不下载依赖包(即不执行 npm install)
+nest new [projectname] --package-manager // 创建项目是自己指定包管理器, 例如 nest new test -p npm
+nest new [projectname] --language // 可以指定ts和ts, 默认ts
+nest new [projectname] --strict // 是否开启严格模式,四个选项,默认为false
 ```
 
-## Deployment
+### nest generate(代码生成)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+```js
+// 可以通过nest generate命令来生成 module controller service文件
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+// 生成Module文件,生成后会自动在AppModule中注册
+nest generate module student 
+// 生成Controller文件,默认会生成测试文件,生成后会自动在StudentModule中注册
+nest generate controller student
+// 生成Service文件,默认会生成测试文件,生成后会自动在StudentModule中注册
+nest service controller student 
 
-```bash
-$ pnpm install -g mau
-$ mau deploy
+// 如果想直接完整的生成一个新的模块(包括module controller service)可以使用如下命令
+nest generate resource teacher 
+// 回车后会让你选择代码风格,因为nest支持http、websocket、graphql、tcp等,这里我们选择http的REST风格api,然后会让你选择是否生成CRUD代码,选择y或n
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+```js
+// --spec 和 --no-spec表示是否生成测试文件,默认为是
+nest generate resource animal --no-spec // 表示不需要生成测试文件
+```
 
-## Resources
+### nest build(编译构建)
 
-Check out a few resources that may come in handy when working with NestJS:
+```js
+nest build --tsc // 表示使用tsc进行编译,默认
+nest build --webpack // 表示使用webpack进行编译
+nest build --path // 是指定tsc配置文件的路径的
+nest build --config // 是指定nest-cli的配置文件路径的
+nest build --watch // 是监听文件变动,自动build的
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### nest start(运行项目)
 
-## Support
+```js
+nest start --watch // 表示启动项目后,如果监听到文件发生改动 自动重启
+nest start --debug // 是启动调试的websocket服务
+nest start --exec // 可以指定用什么来跑,默认是用node跑,也可以切换别的runtime
+// 其余选项和nest build一样
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### nest info(信息查看)
 
-## Stay in touch
+```js
+// nest info 可以用来查看项目信息,包括系统信息,node,npm和依赖版本
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## nest-cli.json
 
-## License
+```js
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true, // 表示每次build时都会清空dist目录
+    "webpack": true // 表示nest build时使用webpack编译, 设置为false后就默认使用tsc编译
+  }
+}
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
