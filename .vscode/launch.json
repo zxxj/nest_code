@@ -1,13 +1,22 @@
 {
-	// 使用 IntelliSense 了解相关属性。 
-	// 悬停以查看现有属性的描述。
-	// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
 		{
 			"name": "Attach",
 			"port": 9229,
 			"request": "attach",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"type": "node"
+		},
+		{
+			"name": "Launch Program",
+			"program": "${workspaceFolder}/index.js",
+			"request": "launch",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
