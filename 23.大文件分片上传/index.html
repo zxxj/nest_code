@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://unpkg.com/axios@0.24.0/dist/axios.min.js"></script>
+</head>
+
+<body>
+	<input id="fileInput" type="file" multiple />
+	<script>
+		const fileInput = document.querySelector('#fileInput');
+
+		fileInput.onchange = async function () {
+			const data = new FormData();
+			data.set('name', 'xin');
+			data.set('age', 20);
+
+			const chunkSize = 1 * 1024 * 1024 // 1M => 假如当前上传的文件为12m,分为12个分片
+
+			const file = fileInput.files[0]
+			console.log(file)
+
+			const chunks = [] // 分片数量
+			let startPos = 0 // 记录每一个分片的起始位置
+
+			// 如果起始位置的大小小于整个文件的大小,继续进行分片
+			while (startPos < file.size) {
+				chunks.push(file.slice(startPos, startPos + chunkSize)) // startPos: 当前分片的开始位置, startPos + chunkSize: 分片结束的位置
+				startPos += chunkSize
+			}
+			const randomStr = Math.random().toString().slice(2, 8)
+
+			const tasks = [] // 保存所有分片请求任务
+			chunks.map(async (chunk, index) => {
+				const data = new FormData();
+				data.set('name', randomStr + '_' + file.name + '-' + index)
+				data.append('files', chunk);
+				tasks.push(axios.post('http://localhost:3000/upload', data))
+
+				await Promise.all(tasks)
+				axios.get(`http://localhost:3000/merge?name=${randomStr}_${file.name}`)
+			})
+		}
+	</script>
+</body>
+
+</html>
