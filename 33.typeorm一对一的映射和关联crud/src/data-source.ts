@@ -15,9 +15,9 @@ export const AppDataSource = new DataSource({
     entities: [User, IdCard],
     migrations: [],
     subscribers: [],
-        poolSize: 10,
+    poolSize: 10,
     connectorPackage: 'mysql2',
-        extra: {
-        authPlugin: 'sha256_password',
+    extra: {
+        authPlugin: 'sha256_password'
     }
 })
