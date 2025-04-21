@@ -1,9 +1,9 @@
-import { AppDataSource } from "./data-source"
-import { IdCard } from "./entity/IdCard"
-import { User } from "./entity/User"
+import { AppDataSource } from './data-source';
+import { IdCard } from './entity/IdCard';
+import { User } from './entity/User';
 
-AppDataSource.initialize().then(async () => {
-
+AppDataSource.initialize()
+  .then(async () => {
     // 1.新增
     // const user = new User()
     // user.firstName = "zhang"
@@ -68,17 +68,23 @@ AppDataSource.initialize().then(async () => {
     //         user: true
     //     }
     // })
-    
+
     // await AppDataSource.manager.delete(User, 3)
     // await AppDataSource.manager.delete(IdCard, 2)
 
     // 4.user中查询idCard信息
+    /**
+     * 不过现在我们只是在idCard里访问user,如果想在user里访问idCard同样需要加一个@OneToOne装饰器,不过需要有第二个参数
+     * 因为如果是维持外键的那个表,也就是有@JoinColumn的那个Entity,它是可以根据外键关联查到另一方的.
+     * 但是现在这个没有外键的表改怎么查到另一方呢?
+     * 所以这里通过第二个参数告诉typeorm,外键是另一个Entity的哪个属性.
+     *  */
     const user = await AppDataSource.manager.find(User, {
-        relations: {
-            idCard: true
-        }
-    })
+      relations: {
+        idCard: true,
+      },
+    });
 
-    console.log(user)
-
-}).catch(error => console.log(error))
+    console.log(user);
+  })
+  .catch((error) => console.log(error));

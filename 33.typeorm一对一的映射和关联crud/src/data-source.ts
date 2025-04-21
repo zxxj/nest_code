@@ -1,23 +1,23 @@
-import "reflect-metadata"
-import { DataSource } from "typeorm"
-import { User } from "./entity/User"
-import { IdCard } from "./entity/IdCard"
+import 'reflect-metadata';
+import { DataSource } from 'typeorm';
+import { User } from './entity/User';
+import { IdCard } from './entity/IdCard';
 
 export const AppDataSource = new DataSource({
-    type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "root",
-    password: "123456",
-    database: "typeorm_test1",
-    synchronize: true,
-    logging: true,
-    entities: [User, IdCard],
-    migrations: [],
-    subscribers: [],
-    poolSize: 10,
-    connectorPackage: 'mysql2',
-    extra: {
-        authPlugin: 'sha256_password'
-    }
-})
+  type: 'mysql',
+  host: 'localhost',
+  port: 3306,
+  username: 'root',
+  password: '123456',
+  database: 'typeorm_test1',
+  synchronize: true,
+  logging: true,
+  entities: [User, IdCard],
+  migrations: [],
+  subscribers: [],
+  poolSize: 10,
+  connectorPackage: 'mysql2',
+  extra: {
+    authPlugin: 'sha256_password',
+  },
+});
