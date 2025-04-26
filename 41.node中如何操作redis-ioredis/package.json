@@ -1,0 +1,7 @@
+{
+  "description": "",
+  "dependencies": {
+    "ioredis": "^5.6.1"
+  },
+  "type": "module"
+}
