@@ -1,0 +1,43 @@
+import {
+  CanActivate,
+  ExecutionContext,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { UserService } from './user.service';
+import { Request } from 'express';
+import { Reflector } from '@nestjs/core';
+
+@Injectable()
+export class PermissionGuard implements CanActivate {
+  @Inject(UserService)
+  private userService: UserService;
+
+  @Inject(Reflector)
+  private reflector: Reflector;
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request: Request = context.switchToHttp().getRequest();
+
+    const user = request.session.user;
+
+    if (!user) {
+      throw new UnauthorizedException('用户未登录');
+    }
+
+    const foundUser = await this.userService.findByUsername(user.username);
+
+    console.log(foundUser);
+
+    const premisstion = this.reflector.get('premisstion', context.getHandler());
+
+    if (foundUser?.premisstions.some((item) => item.name === premisstion)) {
+      return true;
+    } else {
+      throw new UnauthorizedException('没有权限访问此接口');
+    }
+
+    return true;
+  }
+}
