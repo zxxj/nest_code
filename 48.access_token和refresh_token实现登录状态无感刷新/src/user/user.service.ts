@@ -24,4 +24,12 @@ export class UserService {
 
     return foundUser;
   }
+
+  async findUserById(userId: number) {
+    return await this.entityManager.findOne(User, {
+      where: {
+        id: userId,
+      },
+    });
+  }
 }
