@@ -21,7 +21,7 @@ import { JwtModule } from '@nestjs/jwt';
       database: 'refresh_token_test',
       username: 'root',
       password: '123456',
-      host: 'localhost',
+      host: '127.0.0.1',
       port: 3306,
       synchronize: true,
       logging: true,
